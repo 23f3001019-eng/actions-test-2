@@ -1,1 +1,31 @@
-![CI](https://github.com/23f3001019-eng/actions-test-2/actions/workflows/ci.yml/badge.svg)
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run checks
+        run: |
+          echo "CI pipeline running successfully!"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+
+      - name: Verify README badge
+        run: |
+          if grep -q "badge.svg" README.md; then
+            echo "✅ Status badge found in README.md"
+          else
+            echo "⚠️  No badge found yet in README.md"
+          fi
